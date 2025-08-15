@@ -3,71 +3,582 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>오프라인 매장 고객 관여도 진단 도구</title>
+    <title>고객 관여도 진단 도구</title>
     
-    <!-- Pretendard Font -->
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
-    
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        /* Inter Font Family */
+        * {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", sans-serif;
+            letter-spacing: -0.04em;
+        }
+
+        /* Root Variables - Primary Color */
+        :root {
+            --primary-color: #405DE6;
+            
+            --primary-gradient: #405DE6;
+            --light-gradient: linear-gradient(135deg, rgba(64, 93, 230, 0.1) 0%, rgba(64, 93, 230, 0.05) 100%);
+            
+            --shadow-light: 0 2px 10px rgba(64, 93, 230, 0.1);
+            --shadow-medium: 0 4px 20px rgba(64, 93, 230, 0.15);
+            --shadow-heavy: 0 8px 30px rgba(64, 93, 230, 0.2);
+        }
+
+        /* Body */
+        body {
+            background: transparent;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 10px;
+            min-height: 100vh;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar */
+        .navbar-brand {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+        }
+
+        /* Buttons */
+        .btn-gradient {
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 25px;
+            padding: 12px 30px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 60px 0;
+        }
+
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-feather {
+            width: 80px;
+            height: 80px;
+            stroke: var(--primary-color);
+            stroke-width: 1.5;
+        }
+
+        /* Process Steps */
+        .process-step {
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 200px;
+            min-height: 200px;
+            max-height: 200px;
+        }
+
+        .process-step:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .step-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 36px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            font-weight: 700;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            stroke: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .process-step h5 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .process-step p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Form Cards */
+        .form-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-heavy);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-icon {
+            width: 60px;
+            height: 60px;
+            stroke: var(--primary-color);
+            stroke-width: 1.5;
+        }
+
+        .form-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* Progress */
+        .progress {
+            height: 6px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--primary-color);
+            border-radius: 10px;
+            transition: width 0.6s ease;
+        }
+
+        /* Industry/Persona Selection */
+        .industry-selection, .persona-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .industry-option, .persona-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .industry-label, .persona-label {
+            display: block;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .industry-label:hover, .persona-label:hover {
+            border-color: var(--primary-color);
+            background: var(--light-gradient);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .industry-option input:checked + .industry-label,
+        .persona-option input:checked + .persona-label {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .industry-content, .persona-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .industry-icon, .persona-icon {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+        }
+
+        .industry-icon i, .persona-icon i {
+            width: 40px;
+            height: 40px;
+        }
+
+        /* Question Cards */
+        .question-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .likert-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .likert-option input[type="radio"] {
+            display: none;
+        }
+
+        .likert-option label {
+            display: block;
+            padding: 12px 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+            font-size: 0.9rem;
+        }
+
+        .likert-option label:hover {
+            border-color: var(--primary-color);
+            background: var(--light-gradient);
+        }
+
+        .likert-option input:checked + label {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Results Section */
+        .results-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 40px;
+            background: var(--light-gradient);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .score-number {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .score-level {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 10px;
+        }
+
+        .strategy-channel {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .strategy-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .strategy-icon {
+            width: 40px;
+            height: 40px;
+            stroke: var(--primary-color);
+            margin-right: 15px;
+        }
+
+        /* Additional Mobile Responsiveness */
+        @media (max-width: 576px) {
+            .likert-scale {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .likert-option label {
+                padding: 15px;
+                font-size: 1rem;
+            }
+
+            .industry-content, .persona-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .industry-icon, .persona-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .row.g-4 {
+                gap: 1rem !important;
+            }
+        }
+
+        /* Main Container */
+        .main-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px 10px;
+            box-sizing: border-box;
+        }
+
+        .content-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 1000px;
+            min-height: calc(100vh - 40px);
+            box-sizing: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Step visibility */
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .main-wrapper {
+                padding: 10px 5px;
+            }
+            
+            .content-container {
+                padding: 20px;
+                border-radius: 15px;
+                min-height: calc(100vh - 20px);
+            }
+            
+            .hero-title {
+                font-size: 2rem !important;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem !important;
+            }
+            
+            .process-step {
+                height: 180px !important;
+                min-height: 180px !important;
+                max-height: 180px !important;
+                padding: 20px 15px !important;
+            }
+            
+            .form-card {
+                padding: 25px !important;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .content-container {
+                padding: 15px;
+                border-radius: 10px;
+            }
+            
+            .process-step {
+                height: 160px !important;
+                min-height: 160px !important;
+                max-height: 160px !important;
+                padding: 15px 10px !important;
+            }
+            
+            .process-step h5 {
+                font-size: 1rem !important;
+            }
+            
+            .process-step p {
+                font-size: 0.8rem !important;
+            }
+            
+            .step-number {
+                width: 35px !important;
+                height: 35px !important;
+                line-height: 31px !important;
+                font-size: 0.9rem !important;
+            }
+            
+            .step-icon {
+                width: 35px !important;
+                height: 35px !important;
+            }
+        }
+
+
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#" onclick="restartApp()">
-                <i data-feather="trending-up" class="me-2"></i>
-                고객 관여도 진단
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showStep('intro')">홈</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="restartApp()">다시 시작</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Main Container -->
-    <div class="container-fluid py-5" style="min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        
+
+    <!-- Main Content Container -->
+    <div class="main-wrapper">
+        <main class="content-container">
         <!-- Step 1: Introduction -->
-        <div id="step-intro" class="step-content">
-            <div class="row justify-content-center text-center text-white">
+        <div id="step-intro" class="step-content active">
+            <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="hero-section mb-5">
+                    <!-- Hero Section -->
+                    <div class="hero-section text-center mb-5">
+                        <div class="hero-icon mb-4">
+                            <i data-feather="target" class="hero-feather"></i>
+                        </div>
                         <h1 class="hero-title mb-4">오프라인 매장 고객 관여도 진단 도구</h1>
-                        <p class="hero-subtitle mb-4">고객의 관여도를 정확히 파악하고<br>맞춤형 마케팅 전략을 제안받으세요</p>
-                        <button class="btn btn-light btn-lg px-5 py-3" onclick="showStep('industry')">
+                        <p class="hero-subtitle mb-4">
+                            고객의 구매 행동을 분석하고 맞춤형 마케팅 전략을 제안해드립니다.<br>
+                            업종별 특성을 반영한 전문적인 진단으로 효과적인 마케팅 방향을 찾아보세요.
+                        </p>
+                    </div>
+
+                    <!-- Process Steps -->
+                    <div class="process-section mb-5">
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <div class="process-step text-center">
+                                    <div class="step-header">
+                                        <div class="step-number">1</div>
+                                        <i data-feather="briefcase" class="step-icon"></i>
+                                    </div>
+                                    <h5>업종 선택</h5>
+                                    <p class="text-muted">음식점, 카페, 피트니스 중 선택</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="process-step text-center">
+                                    <div class="step-header">
+                                        <div class="step-number">2</div>
+                                        <i data-feather="users" class="step-icon"></i>
+                                    </div>
+                                    <h5>고객 페르소나</h5>
+                                    <p class="text-muted">주요 고객 유형 파악</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="process-step text-center">
+                                    <div class="step-header">
+                                        <div class="step-number">3</div>
+                                        <i data-feather="help-circle" class="step-icon"></i>
+                                    </div>
+                                    <h5>관여도 진단</h5>
+                                    <p class="text-muted">15개 문항 설문 조사</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="process-step text-center">
+                                    <div class="step-header">
+                                        <div class="step-number">4</div>
+                                        <i data-feather="trending-up" class="step-icon"></i>
+                                    </div>
+                                    <h5>전략 제안</h5>
+                                    <p class="text-muted">맞춤형 마케팅 전략</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <div class="text-center">
+                        <button class="btn btn-gradient btn-lg px-5 py-3" onclick="showStep('industry')">
                             <i data-feather="play" class="me-2"></i>
                             진단 시작하기
                         </button>
+                        <p class="text-muted mt-3">
+                            <i data-feather="clock" class="me-1"></i>
+                            약 5분 소요
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Step 2: Industry Selection -->
-        <div id="step-industry" class="step-content" style="display: none;">
+        <div id="step-industry" class="step-content">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-8 col-sm-10">
                     <!-- Progress Indicator -->
                     <div class="progress-section mb-4">
                         <div class="progress">
-                            <div class="progress-bar bg-gradient" role="progressbar" style="width: 25%"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 25%"></div>
                         </div>
                         <div class="d-flex justify-content-between mt-2">
                             <small class="text-primary fw-bold">1. 업종 선택</small>
@@ -92,11 +603,11 @@
                                     <label for="restaurant" class="industry-label">
                                         <div class="industry-content">
                                             <div class="industry-icon">
-                                                <i data-feather="utensils"></i>
+                                                <i data-feather="coffee"></i>
                                             </div>
                                             <div class="industry-text">
                                                 <h5>음식점</h5>
-                                                <p>레스토랑, 식당, 요리 전문점</p>
+                                                <p class="mb-0 text-muted">레스토랑, 한식, 양식, 일식 등</p>
                                             </div>
                                         </div>
                                     </label>
@@ -111,7 +622,7 @@
                                             </div>
                                             <div class="industry-text">
                                                 <h5>카페</h5>
-                                                <p>커피숍, 디저트 카페, 베이커리</p>
+                                                <p class="mb-0 text-muted">커피전문점, 디저트카페, 브런치카페 등</p>
                                             </div>
                                         </div>
                                     </label>
@@ -122,11 +633,11 @@
                                     <label for="fitness" class="industry-label">
                                         <div class="industry-content">
                                             <div class="industry-icon">
-                                                <i data-feather="activity"></i>
+                                                <i data-feather="zap"></i>
                                             </div>
                                             <div class="industry-text">
                                                 <h5>피트니스</h5>
-                                                <p>헬스장, 요가원, 개인 트레이닝</p>
+                                                <p class="mb-0 text-muted">헬스장, 요가, 필라테스, 크로스핏 등</p>
                                             </div>
                                         </div>
                                     </label>
@@ -135,8 +646,9 @@
                         </div>
 
                         <div class="text-center">
-                            <button type="button" class="btn btn-gradient btn-lg px-5" onclick="nextToPersona()" disabled id="industryNext">
+                            <button id="industryNext" class="btn btn-gradient" onclick="nextToPersona()" disabled>
                                 다음 단계
+                                <i data-feather="arrow-right" class="ms-2"></i>
                             </button>
                         </div>
                     </div>
@@ -145,13 +657,13 @@
         </div>
 
         <!-- Step 3: Persona Selection -->
-        <div id="step-persona" class="step-content" style="display: none;">
+        <div id="step-persona" class="step-content">
             <div class="row justify-content-center">
-                <div class="col-lg-8">
+                <div class="col-lg-6 col-md-8 col-sm-10">
                     <!-- Progress Indicator -->
                     <div class="progress-section mb-4">
                         <div class="progress">
-                            <div class="progress-bar bg-gradient" role="progressbar" style="width: 50%"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 50%"></div>
                         </div>
                         <div class="d-flex justify-content-between mt-2">
                             <small class="text-muted">1. 업종 선택</small>
@@ -166,29 +678,29 @@
                         <div class="text-center mb-4">
                             <i data-feather="users" class="form-icon"></i>
                             <h2 class="form-title">주요 고객 유형을 선택해주세요</h2>
-                            <p class="text-muted">귀하의 <span id="industryName"></span>에 가장 많이 방문하는 고객 유형을 선택해주세요.</p>
+                            <p class="text-muted">
+                                <span id="industryName">선택한 업종</span>에서 가장 많은 비중을 차지하는 고객 유형을 선택해주세요.
+                            </p>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <div class="persona-option" onclick="selectPersona('light_visitor')">
+                        <div class="mb-4">
+                            <div class="persona-selection">
+                                <div class="persona-option mb-3" onclick="selectPersona('light_visitor')">
                                     <input type="radio" name="persona" value="light_visitor" id="light_visitor" class="d-none">
                                     <label for="light_visitor" class="persona-label">
                                         <div class="persona-content">
                                             <div class="persona-icon">
-                                                <i data-feather="zap"></i>
+                                                <i data-feather="wind"></i>
                                             </div>
                                             <div class="persona-text">
                                                 <h5>가벼운 방문자</h5>
-                                                <p>우연히 들르는 고객</p>
+                                                <p class="mb-0 text-muted">우연히 들르는 고객, 즉흥적 방문</p>
                                             </div>
                                         </div>
                                     </label>
                                 </div>
-                            </div>
 
-                            <div class="col-md-6 mb-3">
-                                <div class="persona-option" onclick="selectPersona('problem_solver')">
+                                <div class="persona-option mb-3" onclick="selectPersona('problem_solver')">
                                     <input type="radio" name="persona" value="problem_solver" id="problem_solver" class="d-none">
                                     <label for="problem_solver" class="persona-label">
                                         <div class="persona-content">
@@ -197,15 +709,13 @@
                                             </div>
                                             <div class="persona-text">
                                                 <h5>문제 해결형 고객</h5>
-                                                <p>특정 니즈가 있는 고객</p>
+                                                <p class="mb-0 text-muted">특정 니즈가 있는 고객, 목적성 있는 방문</p>
                                             </div>
                                         </div>
                                     </label>
                                 </div>
-                            </div>
 
-                            <div class="col-md-6 mb-3">
-                                <div class="persona-option" onclick="selectPersona('recommendation_based')">
+                                <div class="persona-option mb-3" onclick="selectPersona('recommendation_based')">
                                     <input type="radio" name="persona" value="recommendation_based" id="recommendation_based" class="d-none">
                                     <label for="recommendation_based" class="persona-label">
                                         <div class="persona-content">
@@ -214,15 +724,13 @@
                                             </div>
                                             <div class="persona-text">
                                                 <h5>추천 기반 고객</h5>
-                                                <p>입소문을 중시하는 고객</p>
+                                                <p class="mb-0 text-muted">입소문을 중시하는 고객, SNS/리뷰 확인</p>
                                             </div>
                                         </div>
                                     </label>
                                 </div>
-                            </div>
 
-                            <div class="col-md-6 mb-3">
-                                <div class="persona-option" onclick="selectPersona('loyal_customer')">
+                                <div class="persona-option mb-3" onclick="selectPersona('loyal_customer')">
                                     <input type="radio" name="persona" value="loyal_customer" id="loyal_customer" class="d-none">
                                     <label for="loyal_customer" class="persona-label">
                                         <div class="persona-content">
@@ -231,7 +739,7 @@
                                             </div>
                                             <div class="persona-text">
                                                 <h5>충성 고객</h5>
-                                                <p>브랜드에 애착이 있는 고객</p>
+                                                <p class="mb-0 text-muted">브랜드에 애착이 있는 고객, 단골고객</p>
                                             </div>
                                         </div>
                                     </label>
@@ -240,8 +748,9 @@
                         </div>
 
                         <div class="text-center">
-                            <button type="button" class="btn btn-gradient btn-lg px-5" onclick="nextToQuestions()" disabled id="personaNext">
+                            <button id="personaNext" class="btn btn-gradient" onclick="nextToQuestions()" disabled>
                                 다음 단계
+                                <i data-feather="arrow-right" class="ms-2"></i>
                             </button>
                         </div>
                     </div>
@@ -250,13 +759,13 @@
         </div>
 
         <!-- Step 4: Questions -->
-        <div id="step-questions" class="step-content" style="display: none;">
+        <div id="step-questions" class="step-content">
             <div class="row justify-content-center">
-                <div class="col-lg-10">
+                <div class="col-lg-8">
                     <!-- Progress Indicator -->
                     <div class="progress-section mb-4">
                         <div class="progress">
-                            <div class="progress-bar bg-gradient" role="progressbar" style="width: 75%"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 75%"></div>
                         </div>
                         <div class="d-flex justify-content-between mt-2">
                             <small class="text-muted">1. 업종 선택</small>
@@ -271,15 +780,17 @@
                         <div class="text-center mb-4">
                             <i data-feather="help-circle" class="form-icon"></i>
                             <h2 class="form-title">관여도 진단 설문</h2>
-                            <p class="text-muted">각 문항을 신중히 읽고 현재 상황에 가장 적합한 답변을 선택해주세요.</p>
+                            <p class="text-muted">각 문항에 대해 귀하의 매장 상황에 가장 적합한 답변을 선택해주세요.</p>
                         </div>
 
-                        <!-- Questions will be dynamically generated here -->
-                        <div id="questionsContainer"></div>
+                        <div id="questionsContainer">
+                            <!-- Questions will be generated here -->
+                        </div>
 
-                        <div class="text-center">
-                            <button type="button" class="btn btn-gradient btn-lg px-5" onclick="calculateResults()" id="submitQuestions">
-                                결과 보기
+                        <div class="text-center mt-4">
+                            <button id="submitAnswers" class="btn btn-gradient" onclick="submitAnswers()" disabled>
+                                결과 확인하기
+                                <i data-feather="arrow-right" class="ms-2"></i>
                             </button>
                         </div>
                     </div>
@@ -288,13 +799,13 @@
         </div>
 
         <!-- Step 5: Results -->
-        <div id="step-results" class="step-content" style="display: none;">
+        <div id="step-results" class="step-content">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <!-- Progress Indicator -->
                     <div class="progress-section mb-4">
                         <div class="progress">
-                            <div class="progress-bar bg-gradient" role="progressbar" style="width: 100%"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 100%"></div>
                         </div>
                         <div class="d-flex justify-content-between mt-2">
                             <small class="text-muted">1. 업종 선택</small>
@@ -304,11 +815,12 @@
                         </div>
                     </div>
 
-                    <!-- Results will be dynamically generated here -->
-                    <div id="resultsContainer"></div>
+                    <div id="resultsContainer">
+                        <!-- Results will be generated here -->
+                    </div>
 
                     <div class="text-center mt-4">
-                        <button type="button" class="btn btn-outline-light btn-lg px-5" onclick="restartApp()">
+                        <button class="btn btn-gradient" onclick="showStep('intro')">
                             <i data-feather="refresh-cw" class="me-2"></i>
                             다시 진단하기
                         </button>
@@ -316,17 +828,387 @@
                 </div>
             </div>
         </div>
+        </main>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JavaScript -->
-    <script src="app.js"></script>
-    
     <script>
-        // Initialize Feather icons
-        feather.replace();
+        // Application State
+        let appState = {
+            industry: null,
+            persona: null,
+            responses: {},
+            currentStep: 'intro'
+        };
+
+        // Industry and Persona Mappings
+        const INDUSTRY_NAMES = {
+            'restaurant': '음식점',
+            'cafe': '카페',
+            'fitness': '피트니스'
+        };
+
+        const PERSONA_NAMES = {
+            'light_visitor': '가벼운 방문자',
+            'problem_solver': '문제 해결형 고객',
+            'recommendation_based': '추천 기반 고객',
+            'loyal_customer': '충성 고객'
+        };
+
+        // Questions Data
+        const COMMON_QUESTIONS = [
+            '우리 매장은 고객의 즉각적인 만족을 충족시킨다',
+            '내 매장은 고객의 반복 방문을 유도하는 장치가 있다 (ex. 단골 시스템, 혜택 등)',
+            '고객은 나의 브랜드에 대해 차별성을 느낄 수 있다',
+            '내 매장은 온라인에서 신뢰를 줄 수 있는 후기/정보를 충분히 제공하고 있다',
+            '나의 상품/서비스는 고객 입장에서 가격 대비 가치가 충분히 높다',
+            '고객은 내 매장의 브랜드나 스토리에 관심을 가진다',
+            '고객은 우리 매장을 친구에게 추천하고 싶어할 것이다',
+            '내 매장은 업종 내 경쟁자들과 비교해 돋보이는 포인트가 명확하다',
+            '우리 매장은 고객의 니즈 변화에 민감하게 대응하고 있다',
+            '고객은 우리 매장에서 "자신에게 맞는 선택"을 하고 있다고 느낀다'
+        ];
+
+        const INDUSTRY_QUESTIONS = {
+            'restaurant': [
+                '고객은 식사 외의 경험(예: 공간, 이야기, 서비스)도 중요하게 여긴다',
+                '메뉴 구성은 고객 니즈에 맞게 최적화되어 있다',
+                '방문 전 검색이나 리뷰 확인이 고객의 행동에 영향을 준다',
+                '음식 외에도 리뷰, 사진, 블로그 콘텐츠가 우리 매장을 대표한다',
+                '우리 매장은 주변 다른 음식점과 구분되는 명확한 키워드가 있다'
+            ],
+            'cafe': [
+                '고객은 공간 분위기와 인테리어를 매우 중요하게 생각한다',
+                '커피나 음료 외에도 디저트, 포토존 등 복합적 니즈를 만족시킨다',
+                '고객은 SNS 공유나 인증을 위해 방문하는 성향이 있다',
+                '우리 매장의 이미지나 콘셉트는 뚜렷하고 일관성 있다',
+                '우리 카페는 경쟁사 대비 인스타그램 등에서 더 많은 반응을 유도한다'
+            ],
+            'fitness': [
+                '고객은 운동 목적에 맞는 맞춤형 지도를 기대한다',
+                '고객은 수업 이외에도 결과 측정, 상담 등 부가 서비스를 원한다',
+                '전문가로서의 신뢰와 커뮤니케이션 역량이 고객 유치에 영향을 준다',
+                '내 센터는 회원의 변화 과정을 명확히 시각화할 수 있다',
+                '우리는 고객의 운동 여정을 콘텐츠로 활용하고 있다'
+            ]
+        };
+
+        const LIKERT_OPTIONS = [
+            { value: 1, text: '전혀 그렇지 않다' },
+            { value: 2, text: '그렇지 않다' },
+            { value: 3, text: '보통이다' },
+            { value: 4, text: '그렇다' },
+            { value: 5, text: '매우 그렇다' }
+        ];
+
+        // Utility Functions
+        function showStep(stepName) {
+            console.log('showStep called with:', stepName);
+            
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // Show target step
+            const targetStep = document.getElementById(`step-${stepName}`);
+            if (targetStep) {
+                targetStep.classList.add('active');
+                appState.currentStep = stepName;
+                
+
+                
+                // Update specific step content
+                if (stepName === 'questions') {
+                    generateQuestions();
+                } else if (stepName === 'results') {
+                    generateResults();
+                    // Scroll to top when results are shown
+                    setTimeout(() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 100);
+                }
+                
+                console.log('Step shown:', stepName);
+            } else {
+                console.error('Step not found:', stepName);
+            }
+            
+            // Reinitialize Feather icons
+            feather.replace();
+        }
+
+        function restartApp() {
+            appState = {
+                industry: null,
+                persona: null,
+                responses: {},
+                currentStep: 'intro'
+            };
+            
+            // Reset form selections
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.checked = false;
+            });
+            
+            // Reset buttons
+            const industryNext = document.getElementById('industryNext');
+            const personaNext = document.getElementById('personaNext');
+            const submitAnswers = document.getElementById('submitAnswers');
+            if (industryNext) industryNext.disabled = true;
+            if (personaNext) personaNext.disabled = true;
+            if (submitAnswers) submitAnswers.disabled = true;
+            
+            showStep('intro');
+        }
+
+        // Industry Selection
+        function selectIndustry(industry) {
+            appState.industry = industry;
+            
+            // Update radio button
+            document.getElementById(industry).checked = true;
+            
+            // Enable next button
+            document.getElementById('industryNext').disabled = false;
+            
+            console.log('Industry selected:', industry);
+        }
+
+        function nextToPersona() {
+            if (!appState.industry) {
+                alert('업종을 선택해주세요.');
+                return;
+            }
+            
+            // Update industry name in persona step
+            document.getElementById('industryName').textContent = INDUSTRY_NAMES[appState.industry];
+            
+            showStep('persona');
+        }
+
+        // Persona Selection
+        function selectPersona(persona) {
+            appState.persona = persona;
+            
+            // Update radio button
+            document.getElementById(persona).checked = true;
+            
+            // Enable next button
+            document.getElementById('personaNext').disabled = false;
+            
+            console.log('Persona selected:', persona);
+        }
+
+        function nextToQuestions() {
+            if (!appState.persona) {
+                alert('고객 페르소나를 선택해주세요.');
+                return;
+            }
+            
+            showStep('questions');
+        }
+
+        // Questions Generation
+        function generateQuestions() {
+            const container = document.getElementById('questionsContainer');
+            const allQuestions = [...COMMON_QUESTIONS, ...INDUSTRY_QUESTIONS[appState.industry]];
+            
+            let questionsHtml = '';
+            
+            allQuestions.forEach((question, index) => {
+                const questionId = `q${index + 1}`;
+                
+                questionsHtml += `
+                    <div class="question-card">
+                        <div class="question-number mb-2">
+                            <span class="badge bg-primary">${index + 1}</span>
+                        </div>
+                        <h6 class="question-text mb-3">${question}</h6>
+                        <div class="likert-scale">
+                            ${LIKERT_OPTIONS.map(option => `
+                                <div class="likert-option">
+                                    <input type="radio" id="${questionId}_${option.value}" name="${questionId}" value="${option.value}" onchange="updateAnswer('${questionId}', ${option.value})">
+                                    <label for="${questionId}_${option.value}">${option.text}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = questionsHtml;
+            
+            // Reinitialize icons
+            feather.replace();
+        }
+
+        function updateAnswer(questionId, value) {
+            appState.responses[questionId] = value;
+            
+            // Check if all questions are answered
+            const totalQuestions = COMMON_QUESTIONS.length + INDUSTRY_QUESTIONS[appState.industry].length;
+            const answeredQuestions = Object.keys(appState.responses).length;
+            
+            const submitButton = document.getElementById('submitAnswers');
+            if (submitButton && answeredQuestions === totalQuestions) {
+                submitButton.disabled = false;
+            }
+            
+            console.log('Answer updated:', questionId, value);
+        }
+
+        function submitAnswers() {
+            const totalQuestions = COMMON_QUESTIONS.length + INDUSTRY_QUESTIONS[appState.industry].length;
+            const answeredQuestions = Object.keys(appState.responses).length;
+            
+            if (answeredQuestions < totalQuestions) {
+                alert('모든 문항에 답변해주세요.');
+                return;
+            }
+            
+            showStep('results');
+        }
+
+        // Results Generation
+        function generateResults() {
+            const container = document.getElementById('resultsContainer');
+            
+            // Calculate score
+            let totalScore = 0;
+            let questionCount = 0;
+            
+            // Common questions (weight 1.0)
+            for (let i = 1; i <= COMMON_QUESTIONS.length; i++) {
+                const answer = appState.responses[`q${i}`];
+                if (answer) {
+                    totalScore += answer * 1.0;
+                    questionCount++;
+                }
+            }
+            
+            // Industry-specific questions (weight 1.2)
+            for (let i = COMMON_QUESTIONS.length + 1; i <= COMMON_QUESTIONS.length + INDUSTRY_QUESTIONS[appState.industry].length; i++) {
+                const answer = appState.responses[`q${i}`];
+                if (answer) {
+                    totalScore += answer * 1.2;
+                    questionCount++;
+                }
+            }
+            
+            const score = Math.round((totalScore / (questionCount * 5)) * 100);
+            
+            // Determine engagement level
+            let level = '';
+            if (score >= 70) {
+                level = '고관여';
+            } else if (score >= 40) {
+                level = '중간관여';
+            } else {
+                level = '저관여';
+            }
+            
+            // Generate results HTML
+            container.innerHTML = `
+                <div class="results-card">
+                    <div class="score-display">
+                        <div class="score-number">${score}</div>
+                        <div class="score-level">${level} 고객</div>
+                        <p class="mt-3 mb-0">귀하의 매장은 <strong>${level}</strong> 수준의 고객 관여도를 보유하고 있습니다.</p>
+                    </div>
+                    
+                    <div class="strategy-section">
+                        <h4 class="mb-4">
+                            <i data-feather="lightbulb" class="me-2"></i>
+                            맞춤형 마케팅 전략
+                        </h4>
+                        
+                        <div class="strategy-channels">
+                            <div class="strategy-channel">
+                                <div class="strategy-header">
+                                    <i data-feather="target" class="strategy-icon"></i>
+                                    <div>
+                                        <h5 class="mb-1">고객 관여도 향상 전략</h5>
+                                        <p class="text-muted mb-0">현재 ${level} 수준에서 더 높은 관여도로 발전시키기 위한 방법</p>
+                                    </div>
+                                </div>
+                                <div class="strategy-content">
+                                    ${level === '고관여' ? 
+                                        '• VIP 고객 관리 시스템 구축<br>• 브랜드 커뮤니티 활성화<br>• 개인화된 서비스 제공<br>• 장기적 관계 유지 전략' :
+                                        level === '중간관여' ?
+                                        '• 고객 참여 이벤트 기획<br>• 브랜드 스토리 강화<br>• 개인맞춤 서비스 도입<br>• 고객 피드백 시스템 구축' :
+                                        '• 접근 장벽 낮추기<br>• 즉시 만족감 제공<br>• 간단한 혜택 시스템<br>• 친근한 분위기 조성'
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="strategy-channel">
+                                <div class="strategy-header">
+                                    <i data-feather="users" class="strategy-icon"></i>
+                                    <div>
+                                        <h5 class="mb-1">${PERSONA_NAMES[appState.persona]} 맞춤 전략</h5>
+                                        <p class="text-muted mb-0">선택하신 고객 유형에 특화된 마케팅 접근법</p>
+                                    </div>
+                                </div>
+                                <div class="strategy-content">
+                                    ${appState.persona === 'light_visitor' ?
+                                        '• 시각적 어필 강화<br>• 즉시 혜택 제공<br>• 간단한 메뉴 구성<br>• 편리한 접근성 확보' :
+                                        appState.persona === 'problem_solver' ?
+                                        '• 명확한 솔루션 제시<br>• 전문성 어필<br>• 맞춤 상담 서비스<br>• 결과 중심 커뮤니케이션' :
+                                        appState.persona === 'recommendation_based' ?
+                                        '• SNS 마케팅 강화<br>• 인플루언서 협업<br>• 리뷰 관리 시스템<br>• 공유 인센티브 제공' :
+                                        '• 회원 혜택 확대<br>• 개인화 서비스<br>• 브랜드 스토리 공유<br>• 커뮤니티 구축'
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="strategy-channel">
+                                <div class="strategy-header">
+                                    <i data-feather="briefcase" class="strategy-icon"></i>
+                                    <div>
+                                        <h5 class="mb-1">${INDUSTRY_NAMES[appState.industry]} 업종별 전략</h5>
+                                        <p class="text-muted mb-0">업종 특성을 반영한 전문적 마케팅 방향</p>
+                                    </div>
+                                </div>
+                                <div class="strategy-content">
+                                    ${appState.industry === 'restaurant' ?
+                                        '• 메뉴 스토리텔링<br>• 셰프 브랜딩<br>• 음식 사진 최적화<br>• 예약 시스템 개선' :
+                                        appState.industry === 'cafe' ?
+                                        '• 인테리어 포토존<br>• 시그니처 메뉴 개발<br>• SNS 이벤트 기획<br>• 분위기 마케팅' :
+                                        '• 트레이너 전문성 어필<br>• 성과 가시화 시스템<br>• 맞춤 프로그램 제공<br>• 건강 관리 콘텐츠'
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Reinitialize icons
+            feather.replace();
+            
+            console.log('Results generated:', { score, level, industry: appState.industry, persona: appState.persona });
+        }
+
+
+
+        // Initialize app on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing app');
+            
+            // Initialize Feather icons
+            feather.replace();
+            
+            // Show intro step by default
+            showStep('intro');
+        });
+
+        // Handle browser back/forward
+        window.addEventListener('popstate', function() {
+            showStep('intro');
+        });
     </script>
 </body>
 </html>
